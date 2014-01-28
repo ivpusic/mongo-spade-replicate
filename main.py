@@ -1,4 +1,3 @@
-from event.mongo_event import trigger_add
 from event import mongo_event
 from listener import spade_listener
 from pymongo import MongoClient
