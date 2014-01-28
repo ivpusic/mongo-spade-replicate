@@ -4,12 +4,7 @@ from listener.spade_listener import on_add
 from pymongo import MongoClient
 from models.test import Person, PersonList
 
-db = None
-
 def init(db_name):
-    client = MongoClient()
-    global db
-    db = client[db_name]
     register_add(on_add)
 
 if __name__ == '__main__':
