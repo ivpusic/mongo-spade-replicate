@@ -16,3 +16,6 @@ def trigger_add(data):
 
 def register_add(callback):
     dispatcher.connect(callback, signal=SIGNAL_ADD, sender=dispatcher.Any)
+
+def register_update(callback):
+    dispatcher.connect(callback, signal=SIGNAL_UPDATE, sender=dispatcher.Any)

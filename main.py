@@ -1,11 +1,12 @@
 from event.mongo_event import trigger_add
-from event.mongo_event import register_add
-from listener.spade_listener import on_add
+from event import mongo_event
+from listener import spade_listener
 from pymongo import MongoClient
 from models.test import Person, PersonList
 
 def init(db_name):
-    register_add(on_add)
+    mongo_event.register_add(spade_listener.on_add)
+    mongo_event.register_update(spade_listener.on_update)
 
 if __name__ == '__main__':
     init('persons')
