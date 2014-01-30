@@ -7,10 +7,9 @@ class ReplicationSender(spade.Agent.Agent):
     def send_msg(self, content):
         msg = spade.ACLMessage.ACLMessage()
         msg.setPerformative("inform")
-        msg.addReceiver(spade.AID.aid("dell_receiver", ["xmpp://dell_receiver@10.24.20.61"]))
+        msg.addReceiver(spade.AID.aid("ivan-virtualbox_receiver@10.24.24.209",
+                                      ["xmpp://ivan-virtualbox_receiver@10.24.24.209"]))
         msg.setContent(content)
-        msg.setLanguage('english')
-
         self.send(msg)
 
     class CheckAndSend(spade.Behaviour.Behaviour):

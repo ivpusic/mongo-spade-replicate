@@ -21,8 +21,8 @@ if __name__ == '__main__':
     p1.save()
 
     rs = ReplicationSender('{0}_sender@{1}'.format(config.HOST_NAME.lower(), config.HOST_IP), 'secret')
-    rs.start()
-    rs.setDebugToScreen()
+    #rs.start()
+    #rs.setDebugToScreen()
 
     rr = ReplicationReceiver('{0}_receiver@{1}'.format(config.HOST_NAME.lower(), config.HOST_IP), 'secret')
     rr.start()

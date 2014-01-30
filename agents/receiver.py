@@ -12,7 +12,7 @@ class ReplicationReceiver(spade.Agent.Agent):
 
     def _setup(self):
         self.tmpl = spade.Behaviour.ACLTemplate()
-        self.tmpl.setLanguage('english')
+        self.tmpl.setPerformative('inform')
         self.t = spade.Behaviour.MessageTemplate(self.tmpl)
 
         self.addBehaviour(self.ReceiveEvent(), self.t)
