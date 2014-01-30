@@ -9,8 +9,8 @@ class ReplicationSender(spade.Agent.Agent):
         msg = spade.ACLMessage.ACLMessage()
         msg.setPerformative("inform")
         self.rcvr = spade.AID.aid(
-            name='{0}@{1}'.format('lubuntu1', config.HOST_SPADE_IP),
-            addresses=['xmpp://{0}@{1}'.format('lununtu1', config.HOST_SPADE_IP)]
+            name='{0}@{1}'.format('lubuntu1_receiver', config.HOST_SPADE_IP),
+            addresses=['xmpp://{0}@{1}'.format('lununtu1_receiver', config.HOST_SPADE_IP)]
         )
 
         msg.addReceiver(self.rcvr)
