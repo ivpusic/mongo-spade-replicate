@@ -1,7 +1,8 @@
 from event import mongo_event
 from listener import spade_listener
-from pymongo import MongoClient
 from models.test import Person, PersonList
+from agents.sender import ReplicationSender
+
 
 def init(db_name):
     mongo_event.register_add(spade_listener.on_add)
@@ -14,6 +15,8 @@ if __name__ == '__main__':
     p2 = Person('neko', 'nekic')
     li.add(p1)
     li.add(p2)
-
     li.save()
     p1.save()
+
+    rs = ReplicationSender('replica_send@10.24.20.61', 'secret')
+    rs.start()

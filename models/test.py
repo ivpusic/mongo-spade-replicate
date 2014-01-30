@@ -24,6 +24,9 @@ class BaseModel:
             self.__class__.__dict__
         )
 
+    def test(self):
+        pass
+
 
 class Person(BaseModel):
 
