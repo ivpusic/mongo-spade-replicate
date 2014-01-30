@@ -2,6 +2,8 @@ from event import mongo_event
 from listener import spade_listener
 from models.test import Person, PersonList
 from agents.sender import ReplicationSender
+from agents.receiver import ReplicationReceiver
+import config
 
 
 def init(db_name):
@@ -18,5 +20,10 @@ if __name__ == '__main__':
     li.save()
     p1.save()
 
-    rs = ReplicationSender('replica_send@10.24.20.61', 'secret')
+    rs = ReplicationSender('{0}_sender@{1}'.format(config.HOST_NAME, config.HOST_IP), 'secret')
     rs.start()
+    rs.setDebugToScreen()
+
+    rr = ReplicationReceiver('{0}_receiver@{1}'.format(config.HOST_NAME, config.HOST_IP), 'secret')
+    rr.start()
+    rr.setDebugToScreen()
