@@ -15,10 +15,5 @@ if __name__ == '__main__':
     li.add(p1)
     li.add(p2)
 
-    li.set_collection('players')
-    li.set_db('people')
     li.save()
-
-    p1.set_db('players')
-    p1.set_collection('p')
     p1.save()
