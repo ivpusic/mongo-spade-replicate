@@ -12,23 +12,17 @@ def trigger_add(data, db_info):
     '''
     add data to db, and notify spade about that
     '''
-
-    print "ivaaaaannnnnnnnnnnnnnnnnnnnnnn"
-
     db = client[db_info['db']]
     collection = db[db_info['collection']]
     data['_id'] = collection.insert(data)
 
-    print "buuuuuuuuuuuuuu"
-
     to_send = {}
     to_send['db'] = {
         'db': db_info['db'],
-        'collection': db_info[collection],
+        'collection': db_info['collection'],
         'action': ADD
     }
     to_send['data'] = data
-    print 'sss' * 100
     dispatcher.send(signal=SIGNAL_ADD, sender=to_send)
 
 

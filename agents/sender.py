@@ -14,13 +14,12 @@ class ReplicationSender(spade.Agent.Agent):
                 name='{0}@{1}'.format(agent[0], agent[1]),
                 addresses=['xmpp://{0}@{1}'.format(agent[0], agent[1])]
             )
-            print self.rcvr
             msg.addReceiver(self.rcvr)
 
-        print "end"
-
-        msg.setContent(content)
-        self.send(msg)
+        if msg.getReceivers():
+            msg.setContent(content)
+            self.send(msg)
+            print 'sent...'
 
     class CheckAndSend(spade.Behaviour.OneShotBehaviour):
 
@@ -35,4 +34,4 @@ class ReplicationSender(spade.Agent.Agent):
         self.addBehaviour(self.CheckAndSend(content))
 
     def _setup(self):
-        self.replicate_data('some content to replicate...')
+        pass

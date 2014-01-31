@@ -2,8 +2,6 @@ from agents.agent_cache import SENDERS
 
 
 def on_add(sender):
-    print sender
-    print '-' * 50
     SENDERS[0].replicate_data(sender)
 
 
