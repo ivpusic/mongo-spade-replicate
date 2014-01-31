@@ -9,17 +9,19 @@ class ReplicationSender(spade.Agent.Agent):
         msg = spade.ACLMessage.ACLMessage()
         msg.setPerformative("inform")
 
-        for agent in config.connected[ip.get_lan_ip()]:
-            self.rcvr = spade.AID.aid(
-                name='{0}@{1}'.format(agent[0], agent[1]),
-                addresses=['xmpp://{0}@{1}'.format(agent[0], agent[1])]
-            )
-            msg.addReceiver(self.rcvr)
+        ip_addr = ip.get_lan_ip()
+        if ip_addr in config.connected:
+            for agent in config.connected[ip.get_lan_ip()]:
+                self.rcvr = spade.AID.aid(
+                    name='{0}@{1}'.format(agent[0], agent[1]),
+                    addresses=['xmpp://{0}@{1}'.format(agent[0], agent[1])]
+                )
+                msg.addReceiver(self.rcvr)
 
-        if msg.getReceivers():
-            msg.setContent(content)
-            self.send(msg)
-            print 'sent...'
+            if msg.getReceivers():
+                msg.setContent(content)
+                self.send(msg)
+                print 'sent...'
 
     class CheckAndSend(spade.Behaviour.OneShotBehaviour):
 
