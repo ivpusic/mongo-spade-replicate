@@ -6,7 +6,6 @@ class ReplicationReceiver(spade.Agent.Agent):
     class ReceiveEvent(spade.Behaviour.EventBehaviour):
 
         def _process(self):
-            print 'received message...'
             msg = self._receive().getContent()
             print msg
 

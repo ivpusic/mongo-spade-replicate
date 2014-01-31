@@ -1,6 +1,6 @@
 import spade
-import time
 import config
+from network import ip
 
 
 class ReplicationSender(spade.Agent.Agent):
@@ -8,23 +8,31 @@ class ReplicationSender(spade.Agent.Agent):
     def send_msg(self, content):
         msg = spade.ACLMessage.ACLMessage()
         msg.setPerformative("inform")
-        self.rcvr = spade.AID.aid(
-            name='{0}@{1}'.format('lubuntu1_receiver', config.HOST_SPADE_IP),
-            addresses=['xmpp://{0}@{1}'.format('lununtu1_receiver', config.HOST_SPADE_IP)]
-        )
 
-        msg.addReceiver(self.rcvr)
+        for agent in config.connected[ip.get_lan_ip()]:
+            self.rcvr = spade.AID.aid(
+                name='{0}@{1}'.format(agent[0], agent[1]),
+                addresses=['xmpp://{0}@{1}'.format(agent[0], agent[1])]
+            )
+            print self.rcvr
+            msg.addReceiver(self.rcvr)
+
+        print "end"
+
         msg.setContent(content)
         self.send(msg)
-        print 'sent...'
 
-    class CheckAndSend(spade.Behaviour.Behaviour):
+    class CheckAndSend(spade.Behaviour.OneShotBehaviour):
+
+        def __init__(self, content):
+            super(self.__class__, self).__init__()
+            self.content = content
 
         def _process(self):
-            print 'processing...'
-            self.myAgent.send_msg('hello')
-            time.sleep(1)
+            self.myAgent.send_msg(self.content)
+
+    def replicate_data(self, content):
+        self.addBehaviour(self.CheckAndSend(content))
 
     def _setup(self):
-        p = self.CheckAndSend()
-        self.addBehaviour(p, None)
+        self.replicate_data('some content to replicate...')
