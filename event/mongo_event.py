@@ -83,7 +83,6 @@ def trigger_delete(data, db_info, replicated=False):
         return no_data_error()
 
     to_send['data'] = data
-    print data
     collection.remove(data)
     dispatcher.send(signal=SIGNAL_REMOVE, sender=to_send)
 
