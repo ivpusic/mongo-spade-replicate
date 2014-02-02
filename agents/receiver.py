@@ -1,6 +1,7 @@
 import spade
+from event.action import ADD, UPDATE
 from bson.json_util import loads
-from event.mongo_event import trigger_add
+from event.mongo_event import trigger_add, trigger_update
 
 
 class ReplicationReceiver(spade.Agent.Agent):
@@ -9,10 +10,11 @@ class ReplicationReceiver(spade.Agent.Agent):
 
         def _process(self):
             message = self._receive().getContent()
-            print message
             data = loads(message)
-            print message
-            trigger_add(data['data'], data['db'], replicated=True)
+            if data['db']['action'] == ADD:
+                trigger_add(data['data'], data['db'], replicated=True)
+            if data['db']['action'] == UPDATE:
+                trigger_update(data['data'], data['db'], replicated=True)
 
     def _setup(self):
         self.tmpl = spade.Behaviour.ACLTemplate()
