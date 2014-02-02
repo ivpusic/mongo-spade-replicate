@@ -7,6 +7,16 @@ from bson.objectid import ObjectId
 client = MongoClient()
 
 
+def no_id_error(operation):
+    print 'You must provide _id for ', operation
+    return
+
+
+def no_data_error():
+    print 'There is no required data on mongo server!'
+    return
+
+
 def prepare(db_info, operation):
     db = client[db_info['db']]
     collection = db[db_info['collection']]
@@ -39,14 +49,17 @@ def trigger_add(data, db_info, replicated=False):
 
 
 def trigger_update(data, db_info, replicated=False):
+
+    if '_id' not in data:
+        return no_id_error(UPDATE)
+
     dt = prepare(db_info, UPDATE)
     collection = dt[0]
     to_send = dt[1]
 
     existing_data = collection.find_one({'_id': ObjectId(data['_id'])})
     if not existing_data:
-        print 'data does not exists on sever. Cannot replicate update!'
-        return
+        return no_data_error()
     else:
         if existing_data == data:
             return
@@ -57,16 +70,20 @@ def trigger_update(data, db_info, replicated=False):
 
 
 def trigger_delete(data, db_info, replicated=False):
+
+    if '_id' not in data:
+        return no_id_error(DELETE)
+
     dt = prepare(db_info, DELETE)
     collection = dt[0]
     to_send = dt[1]
 
     existing_data = collection.find_one({'_id': ObjectId(data['_id'])})
     if not existing_data:
-        print 'data does not exists on sever. Cannot replicate delete!'
-        return
+        return no_data_error()
 
     to_send['data'] = data
+    print data
     collection.remove(data)
     dispatcher.send(signal=SIGNAL_REMOVE, sender=to_send)
 
