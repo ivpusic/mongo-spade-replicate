@@ -1,6 +1,8 @@
-import json
+from bson.json_util import dumps, loads
 from event.mongo_event import trigger_add
+from event.mongo_event import trigger_update
 from abc import ABCMeta
+from bson.objectid import ObjectId
 
 
 def object_encoder(obj):
@@ -18,14 +20,18 @@ class BaseModel:
         Convert python object to acceptable mongodb JSON
         and call function for actual DB save
         '''
-        trigger_add(json.loads(json.dumps(
+        trigger_add(loads(dumps(
             self.__dict__,
             default=object_encoder)),
             self.__class__.__dict__
         )
 
-    def test(self):
-        pass
+    def update(self):
+        trigger_update(loads(dumps(
+            self.__dict__,
+            default=object_encoder)),
+            self.__class__.__dict__
+        )
 
 
 class Person(BaseModel):
@@ -33,9 +39,11 @@ class Person(BaseModel):
     collection = 'peoples'
     db = 'people'
 
-    def __init__(self, first, last):
+    def __init__(self, first, last, _id=None):
         self.first = first
         self.last = last
+        if _id:
+            self._id = ObjectId(_id)
 
 
 class PersonList(BaseModel):

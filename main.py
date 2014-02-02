@@ -26,3 +26,6 @@ if __name__ == '__main__':
     li.add(p2)
     li.save()
     p1.save()
+
+    p3 = Person('nn', 'pp', '52edb0daa3d24b1515446077')
+    p3.update()

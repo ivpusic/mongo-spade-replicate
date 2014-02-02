@@ -9,4 +9,8 @@ def on_add(sender):
 
 
 def on_update(sender):
-    print 'update called...'
+    data = dumps(sender)
+    print data
+    print 'from on_update'
+    for s in SENDERS:
+        s.replicate_data(data)
