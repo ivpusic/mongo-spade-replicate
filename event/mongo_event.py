@@ -2,6 +2,7 @@ from pydispatch import dispatcher
 from pymongo import MongoClient
 from event.action import ADD
 
+
 SIGNAL_ADD = 'ADD'
 SIGNAL_REMOVE = 'REMOVE'
 SIGNAL_UPDATE = 'UPDATE'
@@ -12,6 +13,10 @@ def trigger_add(data, db_info, replicated=False):
     '''
     add data to db, and notify spade about that
     '''
+
+    print data
+    print '#' * 80
+
     db = client[db_info['db']]
     collection = db[db_info['collection']]
 
@@ -19,7 +24,7 @@ def trigger_add(data, db_info, replicated=False):
         data = collection.find({'_id': data['_id']})
         print 'data is...', data
     else:
-        data['_id'] = collection.insert(data)
+        data['_id'] = str(collection.insert(data))
 
     to_send = {}
     to_send['db'] = {

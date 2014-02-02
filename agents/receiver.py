@@ -1,5 +1,5 @@
 import spade
-import json
+from bson.json_util import loads
 from event.mongo_event import trigger_add
 
 
