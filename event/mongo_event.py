@@ -8,13 +8,18 @@ SIGNAL_UPDATE = 'UPDATE'
 client = MongoClient()
 
 
-def trigger_add(data, db_info):
+def trigger_add(data, db_info, replicated=False):
     '''
     add data to db, and notify spade about that
     '''
     db = client[db_info['db']]
     collection = db[db_info['collection']]
-    data['_id'] = collection.insert(data)
+
+    if replicated:
+        data = collection.find({'_id': data['_id']})
+        print 'data is...', data
+    else:
+        data['_id'] = collection.insert(data)
 
     to_send = {}
     to_send['db'] = {

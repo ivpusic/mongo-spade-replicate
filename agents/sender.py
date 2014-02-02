@@ -21,7 +21,6 @@ class ReplicationSender(spade.Agent.Agent):
             if msg.getReceivers():
                 msg.setContent(content)
                 self.send(msg)
-                print 'sent...'
 
     class CheckAndSend(spade.Behaviour.OneShotBehaviour):
 
