@@ -1,0 +1,12 @@
+PyDispatcher==2.0.3
+SPADE==2.2.1
+SPARQLWrapper==1.5.2
+argparse==1.2.1
+html5lib==0.95
+isodate==0.4.9
+pexpect==3.1
+pymongo==2.6.3
+pyparsing==2.0.1
+rdflib==4.1.0
+unittest-xml-reporting==1.7.0
+wsgiref==0.1.2
