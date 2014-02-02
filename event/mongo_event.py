@@ -19,11 +19,15 @@ def trigger_add(data, db_info, replicated=False):
 
     if replicated:
         dt = collection.find_one({'id': ObjectId(data['_id'])})
+        print dt
         if dt:
             print 'data already replicated...'
             return
 
-    data['_id'] = str(collection.insert(data))
+    for res in collection.find():
+        print res
+
+    data['_id'] = collection.insert(data)
     to_send = {}
     to_send['db'] = {
         'db': db_info['db'],
