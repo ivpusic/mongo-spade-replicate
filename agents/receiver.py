@@ -1,7 +1,7 @@
 import spade
-from event.action import ADD, UPDATE
+from event.action import ADD, UPDATE, DELETE
 from bson.json_util import loads
-from event.mongo_event import trigger_add, trigger_update
+from event.mongo_event import trigger_add, trigger_update, trigger_delete
 
 
 class ReplicationReceiver(spade.Agent.Agent):
@@ -15,6 +15,8 @@ class ReplicationReceiver(spade.Agent.Agent):
                 trigger_add(data['data'], data['db'], replicated=True)
             if data['db']['action'] == UPDATE:
                 trigger_update(data['data'], data['db'], replicated=True)
+            if data['db']['action'] == DELETE:
+                trigger_delete(data['data'], data['db'], replicated=True)
 
     def _setup(self):
         self.tmpl = spade.Behaviour.ACLTemplate()

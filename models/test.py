@@ -1,6 +1,7 @@
 from bson.json_util import dumps, loads
 from event.mongo_event import trigger_add
 from event.mongo_event import trigger_update
+from event.mongo_event import trigger_delete
 from abc import ABCMeta
 from bson.objectid import ObjectId
 
@@ -28,6 +29,13 @@ class BaseModel:
 
     def update(self):
         trigger_update(loads(dumps(
+            self.__dict__,
+            default=object_encoder)),
+            self.__class__.__dict__
+        )
+
+    def delete(self):
+        trigger_delete(loads(dumps(
             self.__dict__,
             default=object_encoder)),
             self.__class__.__dict__

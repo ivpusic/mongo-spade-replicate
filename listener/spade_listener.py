@@ -10,7 +10,11 @@ def on_add(sender):
 
 def on_update(sender):
     data = dumps(sender)
-    print data
-    print 'from on_update'
+    for s in SENDERS:
+        s.replicate_data(data)
+
+
+def on_delete(sender):
+    data = dumps(sender)
     for s in SENDERS:
         s.replicate_data(data)

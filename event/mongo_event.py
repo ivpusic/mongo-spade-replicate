@@ -1,12 +1,9 @@
 from pydispatch import dispatcher
 from pymongo import MongoClient
-from event.action import ADD, UPDATE
+from event.action import ADD, UPDATE, DELETE
+from event.action import SIGNAL_ADD, SIGNAL_REMOVE, SIGNAL_UPDATE
 from bson.objectid import ObjectId
 
-
-SIGNAL_ADD = 'ADD'
-SIGNAL_REMOVE = 'REMOVE'
-SIGNAL_UPDATE = 'UPDATE'
 client = MongoClient()
 
 
@@ -34,7 +31,6 @@ def trigger_add(data, db_info, replicated=False):
     if replicated:
         dt = collection.find_one({'_id': ObjectId(data['_id'])})
         if dt:
-            print 'data already replicated...'
             return
 
     data['_id'] = collection.insert(data)
@@ -43,25 +39,36 @@ def trigger_add(data, db_info, replicated=False):
 
 
 def trigger_update(data, db_info, replicated=False):
-
     dt = prepare(db_info, UPDATE)
     collection = dt[0]
     to_send = dt[1]
 
     existing_data = collection.find_one({'_id': ObjectId(data['_id'])})
     if not existing_data:
-        print 'data does not exits...'
+        print 'data does not exists on sever. Cannot replicate update!'
         return
     else:
-        print 'data exist....'
-        print existing_data
-        print data
         if existing_data == data:
-            print 'data already updated...'
             return
+
     collection.save(data)
     to_send['data'] = data
     dispatcher.send(signal=SIGNAL_UPDATE, sender=to_send)
+
+
+def trigger_delete(data, db_info, replicated=False):
+    dt = prepare(db_info, DELETE)
+    collection = dt[0]
+    to_send = dt[1]
+
+    existing_data = collection.find_one({'_id': ObjectId(data['_id'])})
+    if not existing_data:
+        print 'data does not exists on sever. Cannot replicate delete!'
+        return
+
+    to_send['data'] = data
+    collection.remove(data)
+    dispatcher.send(signal=SIGNAL_REMOVE, sender=to_send)
 
 
 def register_add(callback):
@@ -70,3 +77,7 @@ def register_add(callback):
 
 def register_update(callback):
     dispatcher.connect(callback, signal=SIGNAL_UPDATE, sender=dispatcher.Any)
+
+
+def register_delete(callback):
+    dispatcher.connect(callback, signal=SIGNAL_REMOVE, sender=dispatcher.Any)

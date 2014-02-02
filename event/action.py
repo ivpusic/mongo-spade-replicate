@@ -1,3 +1,7 @@
 ADD = 'add'
 UPDATE = 'update'
 DELETE = 'delete'
+
+SIGNAL_ADD = ADD
+SIGNAL_REMOVE = DELETE
+SIGNAL_UPDATE = UPDATE

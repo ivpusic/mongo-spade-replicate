@@ -7,6 +7,7 @@ from agents.agent_cache import SENDERS, RECEIVERS
 def init():
     mongo_event.register_add(spade_listener.on_add)
     mongo_event.register_update(spade_listener.on_update)
+    mongo_event.register_delete(spade_listener.on_delete)
 
     for agent in SENDERS:
         agent.start()
@@ -28,4 +29,6 @@ if __name__ == '__main__':
     p1.save()
 
     p3 = Person('nn', 'pp', '52edb0daa3d24b1515446077')
+    p3.save()
     p3.update()
+    p3.delete()
