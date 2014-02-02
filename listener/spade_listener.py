@@ -2,8 +2,8 @@ from agents.agent_cache import SENDERS
 
 
 def on_add(sender):
-    for sender in SENDERS:
-        sender.replicate_data(sender)
+    for s in SENDERS:
+        s.replicate_data(sender)
 
 
 def on_update(sender):

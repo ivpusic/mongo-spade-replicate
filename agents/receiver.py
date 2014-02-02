@@ -8,10 +8,10 @@ class ReplicationReceiver(spade.Agent.Agent):
     class ReceiveEvent(spade.Behaviour.EventBehaviour):
 
         def _process(self):
-            data_str = self._receive().getContent()
-            print data_str
-            print '-'*80
-            #data = json.loads(data_str)
+            message = self._receive().getContent()
+            print '-' * 100
+            print message
+            print '-' * 100
             #trigger_add(data['data'], data['db'], replicated=True)
 
     def _setup(self):

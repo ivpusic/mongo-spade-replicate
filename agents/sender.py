@@ -19,8 +19,10 @@ class ReplicationSender(spade.Agent.Agent):
                 )
                 msg.addReceiver(self.rcvr)
 
+            print 'buuu'
             if msg.getReceivers():
                 msg.setContent(content)
+                print content
                 self.send(msg)
 
     class CheckAndSend(spade.Behaviour.OneShotBehaviour):
