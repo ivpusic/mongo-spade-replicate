@@ -9,10 +9,8 @@ class ReplicationReceiver(spade.Agent.Agent):
 
         def _process(self):
             message = self._receive().getContent()
-            print '-' * 100
-            print message
-            print '-' * 100
-            #trigger_add(data['data'], data['db'], replicated=True)
+            data = loads(message)
+            trigger_add(data['data'], data['db'], replicated=True)
 
     def _setup(self):
         self.tmpl = spade.Behaviour.ACLTemplate()

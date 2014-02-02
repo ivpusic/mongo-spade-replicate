@@ -1,6 +1,7 @@
 from pydispatch import dispatcher
 from pymongo import MongoClient
 from event.action import ADD
+from bson.objectid import ObjectId
 
 
 SIGNAL_ADD = 'ADD'
@@ -21,10 +22,12 @@ def trigger_add(data, db_info, replicated=False):
     collection = db[db_info['collection']]
 
     if replicated:
-        data = collection.find({'_id': data['_id']})
-        print 'data is...', data
-    else:
-        data['_id'] = str(collection.insert(data))
+        data = collection.find_one({'id': ObjectId(data['_id'])})
+        if data:
+            print 'data already replicated...'
+            return
+
+    data['_id'] = str(collection.insert(data))
 
     to_send = {}
     to_send['db'] = {
