@@ -8,6 +8,7 @@ class ReplicationSender(spade.Agent.Agent):
     def send_msg(self, content):
         msg = spade.ACLMessage.ACLMessage()
         msg.setPerformative("inform")
+        msg.setOntology('replication')
 
         ip_addr = ip.get_lan_ip()
         if ip_addr in config.connected:
