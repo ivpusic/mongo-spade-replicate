@@ -53,8 +53,8 @@ def trigger_update(data, db_info, replicated=False):
     existing_data = collection.find_one({'_id': ObjectId(data['_id'])})
     if not existing_data:
         print 'data does not exits...'
-        print 'saving and replicating missing data...'
-        trigger_add(data, db_info, replicated=replicated)
+        print 'Data: ', data
+        return
     else:
         print 'data exist....'
         print existing_data
