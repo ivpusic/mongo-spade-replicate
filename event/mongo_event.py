@@ -43,8 +43,6 @@ def trigger_add(data, db_info, replicated=False):
 
 
 def trigger_update(data, db_info, replicated=False):
-    print 'updating....'
-    print '------' * 100
 
     dt = prepare(db_info, UPDATE)
     collection = dt[0]
@@ -53,7 +51,6 @@ def trigger_update(data, db_info, replicated=False):
     existing_data = collection.find_one({'_id': ObjectId(data['_id'])})
     if not existing_data:
         print 'data does not exits...'
-        print 'Data: ', data
         return
     else:
         print 'data exist....'
