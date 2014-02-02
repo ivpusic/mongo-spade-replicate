@@ -28,7 +28,7 @@ def trigger_add(data, db_info, replicated=False):
     collection = dt[0]
     to_send = dt[1]
 
-    if replicated:
+    if '_id' in data:
         dt = collection.find_one({'_id': ObjectId(data['_id'])})
         if dt:
             return
