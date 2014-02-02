@@ -9,7 +9,9 @@ class ReplicationReceiver(spade.Agent.Agent):
 
         def _process(self):
             message = self._receive().getContent()
+            print message
             data = loads(message)
+            print message
             trigger_add(data['data'], data['db'], replicated=True)
 
     def _setup(self):
@@ -17,5 +19,4 @@ class ReplicationReceiver(spade.Agent.Agent):
         self.tmpl.setPerformative('inform')
         self.tmpl.setOntology('replication')
         self.t = spade.Behaviour.MessageTemplate(self.tmpl)
-
         self.addBehaviour(self.ReceiveEvent(), self.t)

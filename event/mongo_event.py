@@ -14,21 +14,16 @@ def trigger_add(data, db_info, replicated=False):
     '''
     add data to db, and notify spade about that
     '''
-
-    print data
-    print '#' * 80
-
     db = client[db_info['db']]
     collection = db[db_info['collection']]
 
     if replicated:
-        data = collection.find_one({'id': ObjectId(data['_id'])})
-        if data:
+        dt = collection.find_one({'id': ObjectId(data['_id'])})
+        if dt:
             print 'data already replicated...'
             return
 
     data['_id'] = str(collection.insert(data))
-
     to_send = {}
     to_send['db'] = {
         'db': db_info['db'],
