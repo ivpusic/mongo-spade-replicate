@@ -75,6 +75,7 @@ def trigger_update(data, db_info, replicated=False):
 
     data['_id'] = ObjectId(data['_id'])
     collection.save(data)
+    data['_id'] = str(data['_id'])
     to_send['log'] = make_log(db_info['db'], db_info['collection'], str(data['_id']), UPDATE)
     to_send['data'] = data
     dispatcher.send(signal=SIGNAL_UPDATE, sender=to_send)
