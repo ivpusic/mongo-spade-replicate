@@ -16,6 +16,8 @@ def make_log(db, coll, _id, operation):
         for agent in config.connected[config.HOST_NAME]:
             data['agents'].append(agent[0])
     for row in collection.find({'id': _id}):
+        if (row['operation'] == DELETE) and (operation == ADD or operation == UPDATE):
+            continue
         collection.remove(row)
     return str(collection.insert(data))
 
