@@ -42,7 +42,7 @@ class ReplicationReceiver(spade.Agent.Agent):
             for key in config.connected:
                 agents = [ag[0] for ag in config.connected[key]]
                 if self.getAgent().getName().split('@')[0] in agents:
-                    to_send.append(key)
+                    to_send.append(key + '_receiver')
 
             msg = spade.ACLMessage.ACLMessage()
             msg.setPerformative("inform")
@@ -51,10 +51,9 @@ class ReplicationReceiver(spade.Agent.Agent):
             print to_send
             print '#' * 1000
             for agent in to_send:
-                ag = agent + '_receiver'
                 rcvr = spade.AID.aid(
-                    name='{0}@{1}'.format(ag, config.HOST_NAME),
-                    addresses=['xmpp://{0}@{1}'.format(ag, config.HOST_NAME)]
+                    name='{0}@{1}'.format(agent, config.HOST_NAME),
+                    addresses=['xmpp://{0}@{1}'.format(agent, config.HOST_NAME)]
                 )
                 msg.addReceiver(rcvr)
             self.myAgent.send(msg)
