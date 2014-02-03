@@ -35,6 +35,7 @@ class ReplicationSender(spade.Agent.Agent):
     class MessageConfirm(spade.Behaviour.EventBehaviour):
 
         def _process(self):
+            print self._receive().getContent()
             print 'received!'
             print '*' * 100
 
