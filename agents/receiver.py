@@ -29,8 +29,7 @@ class ReplicationReceiver(spade.Agent.Agent):
                 msg.addReceiver(sender)
                 self.myAgent.send(msg)
             else:
-                print 'no log in data!'
-                print '#' * 1000
+                pass
 
     class ReceivePresence(spade.Behaviour.EventBehaviour):
 

@@ -15,10 +15,6 @@ def make_log(db, coll, _id, operation):
     if config.HOST_NAME in config.connected:
         for agent in config.connected[config.HOST_NAME]:
             data['agents'].append(agent[0])
-    #for row in collection.find({'id': _id}):
-    #    if (row['operation'] == DELETE) and (operation == ADD or operation == UPDATE):
-    #        continue
-    #    collection.remove(row)
         return str(collection.insert(data))
 
 
@@ -49,10 +45,10 @@ def find_log(agent):
             action = result['operation']
             db_info = {'collection': result['collection'],
                        'db': result['db'],
-                       'action': action
-                       }
+                       'action': action}
             to_send = {}
             to_send['db'] = db_info
+
             if action == ADD:
                 data = collection_backup.find_one({'_id': ObjectId(_id)})
                 data['_id'] = str(data['_id'])
@@ -62,7 +58,6 @@ def find_log(agent):
                 data = collection_backup.find_one({'_id': ObjectId(_id)})
                 data['_id'] = str(data['_id'])
                 to_send['data'] = data
-                #dispatcher.send(signal=SIGNAL_ADD, sender=to_send)
                 dispatcher.send(signal=SIGNAL_UPDATE, sender=to_send)
             if action == DELETE:
                 data = collection_backup.find_one({'_id': ObjectId(_id)})
@@ -73,5 +68,4 @@ def find_log(agent):
                     data['_id'] = str(data['_id'])
                 to_send['data'] = data
                 dispatcher.send(signal=SIGNAL_REMOVE, sender=to_send)
-                #dispatcher.send(signal=SIGNAL_REMOVE, sender=to_send)
         collection.remove(result)
