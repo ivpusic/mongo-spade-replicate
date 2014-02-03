@@ -70,10 +70,10 @@ def trigger_update(data, db_info, replicated=False):
     if not existing_data:
         return no_data_error()
     else:
+        data['_id'] = ObjectId(data['_id'])
         if existing_data == data:
             return
 
-    data['_id'] = ObjectId(data['_id'])
     collection.save(data)
     data['_id'] = str(data['_id'])
     to_send['log'] = make_log(db_info['db'], db_info['collection'], str(data['_id']), UPDATE)
