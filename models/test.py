@@ -3,7 +3,6 @@ from event.mongo_event import trigger_add
 from event.mongo_event import trigger_update
 from event.mongo_event import trigger_delete
 from abc import ABCMeta
-from bson.objectid import ObjectId
 
 
 def object_encoder(obj):
@@ -51,7 +50,7 @@ class Person(BaseModel):
         self.first = first
         self.last = last
         if _id:
-            self._id = ObjectId(_id)
+            self._id = _id
 
 
 class PersonList(BaseModel):
