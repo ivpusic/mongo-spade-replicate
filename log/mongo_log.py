@@ -1,6 +1,8 @@
-import config
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from event.action import ADD, UPDATE, DELETE
+import config
+import event
 
 client = MongoClient()
 db = client['log']
@@ -30,10 +32,30 @@ def remove_agent_log(agent, log_id):
             return True
     return False
 
+client_backup = MongoClient()
+db_backup = client['log']
+collection_backup = db['log']
+
 
 def find_log(agent):
     for result in collection.find():
         agents = result['agents']
         if agent in agents:
-            print 'postojiiii !!!!!!!'
-            print '*' * 500
+            _id = result['id']
+            db_backup = client[result['db']]
+            collection_backup = db_backup[result['collection']]
+            action = result['operation']
+            db_info = {'collection': result['collection'],
+                       'db': result['db']
+                       }
+            if action == ADD:
+                data = collection_backup.find_one({'_id': _id})
+                event.mongo_event.trigger_add(data, db_info)
+            if action == UPDATE:
+                data = collection_backup.find_one({'_id': _id})
+                event.mongo_event.trigger_add(data, db_info)
+                event.mongo_event.trigger_update(data, db_info)
+            if action == DELETE:
+                data = {}
+                data['_id'] = _id
+                event.mongo_event.trigger_delete(data, db_info)
