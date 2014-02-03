@@ -10,9 +10,9 @@ class ReplicationSender(spade.Agent.Agent):
         msg.setPerformative("inform")
         msg.setOntology('replication')
 
-        ip_addr = ip.get_lan_ip()
+        ip_addr = config.HOST_NAME
         if ip_addr in config.connected:
-            for agent in config.connected[ip.get_lan_ip()]:
+            for agent in config.connected[config.HOST_NAME]:
                 self.rcvr = spade.AID.aid(
                     name='{0}@{1}'.format(agent[0], agent[1]),
                     addresses=['xmpp://{0}@{1}'.format(agent[0], agent[1])]

@@ -5,7 +5,6 @@ HOST_NAME = socket.gethostname()
 
 connected = {
     # agent_local_ip source : [[agent_name_destination, spade_platform_ip]]
-    '10.24.20.61': [['lubuntu1_receiver', HOST_SPADE_IP],
-                    ['lubuntu2_receiver', HOST_SPADE_IP]],
-    '10.24.24.209': [['dell', HOST_SPADE_IP]]
+    'dell': [['lubuntu1_receiver', HOST_SPADE_IP], ['lubuntu2_receiver', HOST_SPADE_IP]],
+    'lubuntu1': [['dell', HOST_SPADE_IP]]
 }
