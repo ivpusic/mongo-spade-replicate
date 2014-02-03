@@ -1,5 +1,6 @@
 import config
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 client = MongoClient()
 db = client['log']
@@ -15,10 +16,10 @@ def make_log(db, coll, _id, operation):
     return str(collection.insert(data))
 
 
-def remove_agent_log(agent, _id):
-    print _id, agent
+def remove_agent_log(agent, log_id):
+    print agent, log_id
     print '*' * 500
-    for result in collection.find({'id': _id}):
+    for result in collection.find({'_id': ObjectId(log_id)}):
         agents = result['agents']
         if agent in agents:
             agents.remove(agent)

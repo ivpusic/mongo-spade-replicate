@@ -1,6 +1,6 @@
 import spade
 import config
-from network import ip
+from log.mongo_log import remove_agent_log
 
 
 class ReplicationSender(spade.Agent.Agent):
@@ -35,7 +35,10 @@ class ReplicationSender(spade.Agent.Agent):
     class MessageConfirm(spade.Behaviour.EventBehaviour):
 
         def _process(self):
-            print self._receive().getContent()
+            content = self._receive()
+            log_id = content.getContent()
+            agent = content.getSender().getName().split('@')[0]
+            remove_agent_log(agent, log_id)
             print 'received!'
             print '*' * 100
 
