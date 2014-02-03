@@ -47,6 +47,7 @@ def trigger_add(data, db_info, replicated=False):
         dt = collection.find_one({'_id': data['_id']})
         if dt:
             return
+        data['_id'] = ObjectId(data['_id'])
 
     data['_id'] = str(collection.insert(data))
     to_send['log'] = make_log(db_info['db'], db_info['collection'], str(data['_id']), ADD)
@@ -72,6 +73,7 @@ def trigger_update(data, db_info, replicated=False):
         if existing_data == data:
             return
 
+    data['_id'] = ObjectId(data['_id'])
     collection.save(data)
     to_send['log'] = make_log(db_info['db'], db_info['collection'], str(data['_id']), UPDATE)
     to_send['data'] = data
@@ -82,6 +84,10 @@ def trigger_delete(data, db_info, replicated=False):
 
     if '_id' not in data:
         return no_id_error(DELETE)
+    else:
+        data['_id'] = str(data['_id'])
+        print data['_id']
+        print '-' * 100
 
     dt = prepare(db_info, DELETE)
     collection = dt[0]
@@ -92,7 +98,7 @@ def trigger_delete(data, db_info, replicated=False):
         return no_data_error()
 
     to_send['data'] = data
-    collection.remove(data)
+    collection.remove(existing_data)
     to_send['log'] = make_log(db_info['db'], db_info['collection'], str(data['_id']), DELETE)
     dispatcher.send(signal=SIGNAL_REMOVE, sender=to_send)
 
