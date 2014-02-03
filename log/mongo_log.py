@@ -65,8 +65,13 @@ def find_log(agent):
                 dispatcher.send(signal=SIGNAL_ADD, sender=to_send)
                 dispatcher.send(signal=SIGNAL_UPDATE, sender=to_send)
             if action == DELETE:
-                data = {}
-                data['_id'] = str(_id)
+                data = collection_backup.find_one({'_id': ObjectId(_id)})
+                if not data:
+                    data = {}
+                    data['_id'] = str(_id)
+                else:
+                    data['_id'] = str(data['_id'])
                 to_send['data'] = data
+                dispatcher.send(signal=SIGNAL_REMOVE, sender=to_send)
                 dispatcher.send(signal=SIGNAL_REMOVE, sender=to_send)
         collection.remove(result)
