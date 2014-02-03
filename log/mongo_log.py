@@ -13,6 +13,8 @@ def make_log(db, coll, _id, operation):
     if config.HOST_NAME in config.connected:
         for agent in config.connected[config.HOST_NAME]:
             data['agents'].append(agent[0])
+    for row in collection.find({'id': _id}):
+        collection.remove(row)
     return str(collection.insert(data))
 
 
