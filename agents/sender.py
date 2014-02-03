@@ -40,8 +40,6 @@ class ReplicationSender(spade.Agent.Agent):
             log_id = content.getContent()
             agent = content.getSender().getName().split('@')[0]
             remove_agent_log(agent, log_id)
-            print 'received!'
-            print '*' * 100
 
     def replicate_data(self, content):
         self.addBehaviour(self.CheckAndSend(content))

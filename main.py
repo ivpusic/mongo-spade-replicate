@@ -11,11 +11,11 @@ def init():
 
     for agent in SENDERS:
         agent.start()
-        agent.setDebugToScreen()
+        #agent.setDebugToScreen()
 
     for agent in RECEIVERS:
         agent.start()
-        agent.setDebugToScreen()
+        #agent.setDebugToScreen()
 
 
 if __name__ == '__main__':

@@ -38,7 +38,6 @@ class ReplicationReceiver(spade.Agent.Agent):
 
         def _process(self):
             to_send = []
-            print 'ime...', self.getAgent().getName()
             for key in config.connected:
                 agents = [ag[0] for ag in config.connected[key]]
                 if self.getAgent().getName().split('@')[0] in agents:
@@ -48,14 +47,11 @@ class ReplicationReceiver(spade.Agent.Agent):
             msg.setPerformative("inform")
             msg.setOntology('online')
             msg.setContent('I am online...')
-            print to_send
-            print '#' * 1000
             for agent in to_send:
                 self.rcvr = spade.AID.aid(
                     name='{0}@{1}'.format(agent, config.HOST_SPADE_IP),
                     addresses=['xmpp://{0}@{1}'.format(agent, config.HOST_SPADE_IP)]
                 )
-                print self.rcvr
                 msg.addReceiver(self.rcvr)
             self.myAgent.send(msg)
 

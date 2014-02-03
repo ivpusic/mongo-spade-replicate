@@ -42,7 +42,6 @@ collection_backup = db['log']
 def find_log(agent):
     for result in collection.find():
         agents = result['agents']
-        print '-' * 500
         if agent in agents:
             _id = result['id']
             db_backup = client[result['db']]
