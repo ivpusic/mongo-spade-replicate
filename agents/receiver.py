@@ -48,6 +48,8 @@ class ReplicationReceiver(spade.Agent.Agent):
             msg.setPerformative("inform")
             msg.setOntology('online')
             msg.setContent('I am online...')
+            print to_send
+            print '#' * 1000
             for agent in to_send:
                 rcvr = spade.AID.aid(
                     name='{0}@{1}'.format(agent, config.HOST_NAME),
