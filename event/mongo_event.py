@@ -66,7 +66,8 @@ def trigger_update(data, db_info, replicated=False):
     existing_data = collection.find_one({'_id': ObjectId(data['_id'])})
     if not existing_data:
         return no_data_error()
-    if existing_data == data:
+    else:
+        if existing_data == data:
             return
 
     collection.save(data)
