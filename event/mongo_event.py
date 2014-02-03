@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from event.action import ADD, UPDATE, DELETE
 from event.action import SIGNAL_ADD, SIGNAL_REMOVE, SIGNAL_UPDATE
 from bson.objectid import ObjectId
+from log.mongo_log import make_log
 
 client = MongoClient()
 
@@ -44,6 +45,7 @@ def trigger_add(data, db_info, replicated=False):
             return
 
     data['_id'] = collection.insert(data)
+    make_log(db_info['db'], db_info['collection'], str(data['_id']), ADD)
     to_send['data'] = data
     dispatcher.send(signal=SIGNAL_ADD, sender=to_send)
 
@@ -65,6 +67,7 @@ def trigger_update(data, db_info, replicated=False):
             return
 
     collection.save(data)
+    make_log(db_info['db'], db_info['collection'], str(data['_id']), UPDATE)
     to_send['data'] = data
     dispatcher.send(signal=SIGNAL_UPDATE, sender=to_send)
 
@@ -84,6 +87,7 @@ def trigger_delete(data, db_info, replicated=False):
 
     to_send['data'] = data
     collection.remove(data)
+    make_log(db_info['db'], db_info['collection'], str(data['_id']), DELETE)
     dispatcher.send(signal=SIGNAL_REMOVE, sender=to_send)
 
 
