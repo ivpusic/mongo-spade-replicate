@@ -44,6 +44,10 @@ def trigger_add(data, db_info, replicated=False):
         if dt:
             return
 
+        dt = collection.find_one({'_id': data['_id']})
+        if dt:
+            return
+
     data['_id'] = collection.insert(data)
     to_send['log'] = make_log(db_info['db'], db_info['collection'], str(data['_id']), ADD)
     to_send['data'] = data
@@ -62,8 +66,7 @@ def trigger_update(data, db_info, replicated=False):
     existing_data = collection.find_one({'_id': ObjectId(data['_id'])})
     if not existing_data:
         return no_data_error()
-    else:
-        if existing_data == data:
+    if existing_data == data:
             return
 
     collection.save(data)
