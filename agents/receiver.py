@@ -20,13 +20,17 @@ class ReplicationReceiver(spade.Agent.Agent):
             if data['db']['action'] == DELETE:
                 trigger_delete(data['data'], data['db'], replicated=True)
 
-            sender = message.getSender()
-            msg = spade.ACLMessage.ACLMessage()
-            msg.setPerformative("inform")
-            msg.setOntology('confirm')
-            msg.setContent(data['log'])
-            msg.addReceiver(sender)
-            self.myAgent.send(msg)
+            if 'log' in data:
+                sender = message.getSender()
+                msg = spade.ACLMessage.ACLMessage()
+                msg.setPerformative("inform")
+                msg.setOntology('confirm')
+                msg.setContent(data['log'])
+                msg.addReceiver(sender)
+                self.myAgent.send(msg)
+            else:
+                print 'no log in data!'
+                print '#' * 1000
 
     class ReceivePresence(spade.Behaviour.EventBehaviour):
 
