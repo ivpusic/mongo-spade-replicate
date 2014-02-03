@@ -48,7 +48,7 @@ def trigger_add(data, db_info, replicated=False):
         if dt:
             return
 
-    data['_id'] = collection.insert(data)
+    data['_id'] = str(collection.insert(data))
     to_send['log'] = make_log(db_info['db'], db_info['collection'], str(data['_id']), ADD)
     to_send['data'] = data
     dispatcher.send(signal=SIGNAL_ADD, sender=to_send)
