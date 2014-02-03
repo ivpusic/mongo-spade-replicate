@@ -71,8 +71,6 @@ def trigger_update(data, db_info, replicated=False):
         return no_data_error()
     else:
         data['_id'] = ObjectId(data['_id'])
-        print existing_data
-        print data
         if existing_data == data:
             return
 
