@@ -21,6 +21,9 @@ def remove_agent_log(agent, log_id):
         agents = result['agents']
         if agent in agents:
             agents.remove(agent)
+            if not agents:
+                collection.remove({'_id': ObjectId(log_id)})
+                return True
             collection.update({'_id': result['_id']}, {'$set': {'agents': agents}})
             return True
     return False

@@ -3,6 +3,7 @@ import config
 from event.action import ADD, UPDATE, DELETE
 from bson.json_util import loads
 from event.mongo_event import trigger_add, trigger_update, trigger_delete
+from log.mongo_log import find_log
 
 
 class ReplicationReceiver(spade.Agent.Agent):
@@ -30,9 +31,8 @@ class ReplicationReceiver(spade.Agent.Agent):
     class ReceivePresence(spade.Behaviour.EventBehaviour):
 
         def _process(self):
-            #message = self._receive()
-            print 'presenceeee!!!!!'
-            print '%' * 200
+            sender = self._receive().getSender().getName().split('@')[0]
+            find_log(sender)
 
     class OnlineNotify(spade.Behaviour.OneShotBehaviour):
 
