@@ -51,11 +51,12 @@ class ReplicationReceiver(spade.Agent.Agent):
             print to_send
             print '#' * 1000
             for agent in to_send:
-                rcvr = spade.AID.aid(
+                self.rcvr = spade.AID.aid(
                     name='{0}@{1}'.format(agent, config.HOST_NAME),
                     addresses=['xmpp://{0}@{1}'.format(agent, config.HOST_NAME)]
                 )
-                msg.addReceiver(rcvr)
+                print self.rcvr
+                msg.addReceiver(self.rcvr)
             self.myAgent.send(msg)
 
     def _setup(self):

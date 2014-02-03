@@ -8,7 +8,7 @@
 
     <acc>
         <hostname>acc.10.24.20.61</hostname>
-        <password>fpuWjQec</password>
+        <password>OgpUvBjU</password>
         <port>5222</port>
 
         <mtp name="http">
@@ -18,13 +18,13 @@
     </acc>
     <ams>
         <hostname>ams.10.24.20.61</hostname>
-        <password>HtEhpYYq</password>
+        <password>DbWrvxBP</password>
         <port>5222</port>
     </ams>
 
     <df>
         <hostname>df.10.24.20.61</hostname>
-        <password>hUBcbady</password>
+        <password>RvEBktMi</password>
         <port>5222</port>
     </df>
 </spade>
