@@ -6,6 +6,7 @@ from log.mongo_log import remove_agent_log
 class ReplicationSender(spade.Agent.Agent):
 
     def send_msg(self, content):
+
         msg = spade.ACLMessage.ACLMessage()
         msg.setPerformative("inform")
         msg.setOntology('replication')

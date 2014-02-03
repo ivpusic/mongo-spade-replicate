@@ -58,6 +58,8 @@ def trigger_update(data, db_info, replicated=False):
 
     if '_id' not in data:
         return no_id_error(UPDATE)
+    else:
+        data['_id'] = str(data['_id'])
 
     dt = prepare(db_info, UPDATE)
     collection = dt[0]
