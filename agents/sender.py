@@ -32,8 +32,18 @@ class ReplicationSender(spade.Agent.Agent):
         def _process(self):
             self.myAgent.send_msg(self.content)
 
+    class MessageConfirm(spade.Behaviour.EventBehaviour):
+
+        def _process(self):
+            print 'received!'
+            print '*' * 100
+
     def replicate_data(self, content):
         self.addBehaviour(self.CheckAndSend(content))
 
     def _setup(self):
-        pass
+        self.tmpl = spade.Behaviour.ACLTemplate()
+        self.tmpl.setPerformative('inform')
+        self.tmpl.setOntology('confirm')
+        self.t = spade.Behaviour.MessageTemplate(self.tmpl)
+        self.addBehaviour(self.MessageConfirm(), self.t)
