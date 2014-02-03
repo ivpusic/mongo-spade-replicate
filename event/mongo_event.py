@@ -57,6 +57,8 @@ def trigger_add(data, db_info, replicated=False):
 
 def trigger_update(data, db_info, replicated=False):
 
+    print '#' * 100
+
     if '_id' not in data:
         return no_id_error(UPDATE)
     else:
@@ -66,14 +68,19 @@ def trigger_update(data, db_info, replicated=False):
     collection = dt[0]
     to_send = dt[1]
 
+    print '2'
+
     existing_data = collection.find_one({'_id': ObjectId(data['_id'])})
     if not existing_data:
         return no_data_error()
     else:
         data['_id'] = ObjectId(data['_id'])
+        print existing_data
+        print data
         if existing_data == data:
             return
-
+    print '*' * 100
+    print 'update!'
     collection.save(data)
     data['_id'] = str(data['_id'])
     to_send['log'] = make_log(db_info['db'], db_info['collection'], str(data['_id']), UPDATE)

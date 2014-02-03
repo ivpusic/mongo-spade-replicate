@@ -32,4 +32,4 @@ if __name__ == '__main__':
     p3.save()
     p3 = Person('nn', 'pp update', '52edb0daa3d24b1515446077')
     p3.update()
-    #p3.delete()
+    p3.delete()
