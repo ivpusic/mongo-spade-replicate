@@ -63,10 +63,10 @@ class ReplicationReceiver(spade.Agent.Agent):
         self.t = spade.Behaviour.MessageTemplate(self.tmpl)
         self.addBehaviour(self.ReceiveEvent(), self.t)
 
-        #self.tmpl = spade.Behaviour.ACLTemplate()
-        #self.tmpl.setPerformative('inform')
-        #self.tmpl.setOntology('online')
-        #self.t = spade.Behaviour.MessageTemplate(self.tmpl)
-        #self.addBehaviour(self.ReceiveEvent(), self.t)
+        self.tmpl = spade.Behaviour.ACLTemplate()
+        self.tmpl.setPerformative('inform')
+        self.tmpl.setOntology('online')
+        self.t = spade.Behaviour.MessageTemplate(self.tmpl)
+        self.addBehaviour(self.ReceivePresence(), self.t)
 
-        #self.addBehaviour(self.OnlineNotify())
+        self.addBehaviour(self.OnlineNotify())
