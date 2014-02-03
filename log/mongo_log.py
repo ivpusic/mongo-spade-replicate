@@ -19,7 +19,7 @@ def make_log(db, coll, _id, operation):
     #    if (row['operation'] == DELETE) and (operation == ADD or operation == UPDATE):
     #        continue
     #    collection.remove(row)
-    return str(collection.insert(data))
+        return str(collection.insert(data))
 
 
 def remove_agent_log(agent, log_id):
