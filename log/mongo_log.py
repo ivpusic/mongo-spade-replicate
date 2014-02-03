@@ -65,7 +65,7 @@ def find_log(agent):
                 dispatcher.send(signal=SIGNAL_UPDATE, sender=to_send)
             if action == DELETE:
                 data = {}
-                data['_id'] = _id
+                data['_id'] = str(_id)
                 to_send['data'] = data
                 dispatcher.send(signal=SIGNAL_REMOVE, sender=to_send)
         collection.remove(result)

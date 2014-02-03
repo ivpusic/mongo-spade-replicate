@@ -87,8 +87,6 @@ def trigger_delete(data, db_info, replicated=False):
         return no_id_error(DELETE)
     else:
         data['_id'] = str(data['_id'])
-        print data['_id']
-        print '-' * 100
 
     dt = prepare(db_info, DELETE)
     collection = dt[0]
