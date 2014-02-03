@@ -22,7 +22,7 @@ class ReplicationReceiver(spade.Agent.Agent):
             msg = spade.ACLMessage.ACLMessage()
             msg.setPerformative("inform")
             msg.setOntology('confirm')
-            msg.setContent(data['data'])
+            msg.setContent(data['log'])
             msg.addReceiver(sender)
             self.myAgent.send(msg)
 

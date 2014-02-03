@@ -45,7 +45,7 @@ def trigger_add(data, db_info, replicated=False):
             return
 
     data['_id'] = collection.insert(data)
-    make_log(db_info['db'], db_info['collection'], str(data['_id']), ADD)
+    to_send['log'] = make_log(db_info['db'], db_info['collection'], str(data['_id']), ADD)
     to_send['data'] = data
     dispatcher.send(signal=SIGNAL_ADD, sender=to_send)
 
@@ -67,7 +67,7 @@ def trigger_update(data, db_info, replicated=False):
             return
 
     collection.save(data)
-    make_log(db_info['db'], db_info['collection'], str(data['_id']), UPDATE)
+    to_send['log'] = make_log(db_info['db'], db_info['collection'], str(data['_id']), UPDATE)
     to_send['data'] = data
     dispatcher.send(signal=SIGNAL_UPDATE, sender=to_send)
 
@@ -87,7 +87,7 @@ def trigger_delete(data, db_info, replicated=False):
 
     to_send['data'] = data
     collection.remove(data)
-    make_log(db_info['db'], db_info['collection'], str(data['_id']), DELETE)
+    to_send['log'] = make_log(db_info['db'], db_info['collection'], str(data['_id']), DELETE)
     dispatcher.send(signal=SIGNAL_REMOVE, sender=to_send)
 
 

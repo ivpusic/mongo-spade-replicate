@@ -12,7 +12,7 @@ def make_log(db, coll, _id, operation):
     if config.HOST_NAME in config.connected:
         for agent in config.connected[config.HOST_NAME]:
             data['agents'].append(agent[0])
-    collection.insert(data)
+    return str(collection.insert(data))
 
 
 def remove_agent_log(agent, _id):
