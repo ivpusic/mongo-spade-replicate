@@ -63,7 +63,7 @@ def find_log(agent):
                 data = collection_backup.find_one({'_id': ObjectId(_id)})
                 data['_id'] = str(data['_id'])
                 to_send['data'] = data
-                #dispatcher.send(signal=SIGNAL_ADD, sender=to_send)
+                dispatcher.send(signal=SIGNAL_ADD, sender=to_send)
                 dispatcher.send(signal=SIGNAL_UPDATE, sender=to_send)
             if action == DELETE:
                 data = {}
