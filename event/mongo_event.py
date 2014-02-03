@@ -38,17 +38,26 @@ def trigger_add(data, db_info, replicated=False):
     dt = prepare(db_info, ADD)
     collection = dt[0]
     to_send = dt[1]
-
+    print '1'
     if '_id' in data:
+        print '11'
+        print data
+        data['_id'] = str(data['_id'])
+        print data['_id']
+        print collection.find_one()
+        for r in collection.find():
+            print 'bu!'
+        print 'dela!'
         dt = collection.find_one({'_id': ObjectId(data['_id'])})
+        print 'bu!'
         if dt:
             return
-
+        print '12'
         dt = collection.find_one({'_id': data['_id']})
         if dt:
             return
         data['_id'] = ObjectId(data['_id'])
-
+    print '2'
     data['_id'] = str(collection.insert(data))
     to_send['log'] = make_log(db_info['db'], db_info['collection'], str(data['_id']), ADD)
     to_send['data'] = data

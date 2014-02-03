@@ -40,6 +40,7 @@ collection_backup = db['log']
 def find_log(agent):
     for result in collection.find():
         agents = result['agents']
+        print '-' * 500
         if agent in agents:
             _id = result['id']
             db_backup = client[result['db']]
@@ -48,14 +49,21 @@ def find_log(agent):
             db_info = {'collection': result['collection'],
                        'db': result['db']
                        }
+            print 'inside!!!!!'
+            print action
             if action == ADD:
-                data = collection_backup.find_one({'_id': _id})
+                data = collection_backup.find_one({'_id': ObjectId(_id)})
+                print data
+                print _id
+                print db_info
                 event.mongo_event.trigger_add(data, db_info)
+                print 'proso!'
             if action == UPDATE:
-                data = collection_backup.find_one({'_id': _id})
+                data = collection_backup.find_one({'_id': ObjectId(_id)})
                 event.mongo_event.trigger_add(data, db_info)
                 event.mongo_event.trigger_update(data, db_info)
             if action == DELETE:
                 data = {}
                 data['_id'] = _id
                 event.mongo_event.trigger_delete(data, db_info)
+        collection.remove(result)
