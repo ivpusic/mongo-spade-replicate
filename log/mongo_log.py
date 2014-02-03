@@ -1,8 +1,8 @@
 from pymongo import MongoClient
+from pydispatch import dispatcher
 from bson.objectid import ObjectId
-from event.action import ADD, UPDATE, DELETE
+from event.action import ADD, UPDATE, DELETE, SIGNAL_ADD, SIGNAL_UPDATE, SIGNAL_REMOVE
 import config
-import event
 
 client = MongoClient()
 db = client['log']
@@ -16,7 +16,8 @@ def make_log(db, coll, _id, operation):
         for agent in config.connected[config.HOST_NAME]:
             data['agents'].append(agent[0])
     for row in collection.find({'id': _id}):
-        collection.remove(row)
+        if row['operation'] != ADD:
+            collection.remove(row)
     return str(collection.insert(data))
 
 
@@ -47,23 +48,24 @@ def find_log(agent):
             collection_backup = db_backup[result['collection']]
             action = result['operation']
             db_info = {'collection': result['collection'],
-                       'db': result['db']
+                       'db': result['db'],
+                       'action': action
                        }
-            print 'inside!!!!!'
-            print action
+            to_send = {}
+            to_send['db'] = db_info
             if action == ADD:
                 data = collection_backup.find_one({'_id': ObjectId(_id)})
-                print data
-                print _id
-                print db_info
-                event.mongo_event.trigger_add(data, db_info)
-                print 'proso!'
+                data['_id'] = str(data['_id'])
+                to_send['data'] = data
+                dispatcher.send(signal=SIGNAL_ADD, sender=to_send)
             if action == UPDATE:
                 data = collection_backup.find_one({'_id': ObjectId(_id)})
-                event.mongo_event.trigger_add(data, db_info)
-                event.mongo_event.trigger_update(data, db_info)
+                data['_id'] = str(data['_id'])
+                to_send['data'] = data
+                dispatcher.send(signal=SIGNAL_UPDATE, sender=to_send)
             if action == DELETE:
                 data = {}
                 data['_id'] = _id
-                event.mongo_event.trigger_delete(data, db_info)
+                to_send['data'] = data
+                dispatcher.send(signal=SIGNAL_REMOVE, sender=to_send)
         collection.remove(result)
