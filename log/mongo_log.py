@@ -17,8 +17,6 @@ def make_log(db, coll, _id, operation):
 
 
 def remove_agent_log(agent, log_id):
-    print agent, log_id
-    print '*' * 500
     for result in collection.find({'_id': ObjectId(log_id)}):
         agents = result['agents']
         if agent in agents:
@@ -26,3 +24,11 @@ def remove_agent_log(agent, log_id):
             collection.update({'_id': result['_id']}, {'$set': {'agents': agents}})
             return True
     return False
+
+
+def find_log(agent):
+    for result in collection.find():
+        agents = result['agents']
+        if agent in agents:
+            print 'postojiiii !!!!!!!'
+            print '*' * 500
